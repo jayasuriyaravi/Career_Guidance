@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Akronim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+.registration-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background: #fff;
+    border: 1px solid rgb(230, 44, 42);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    color: rgb(230, 44, 42);
+}
+
+.registration-form label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+.registration-form input,
+.registration-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgb(230, 44, 42);
+    border-radius: 5px;
+}
+
+.skill-input-container {
+    display: flex;
+    gap: 10px;
+}
+
+.add-skill-btn {
+    background: rgb(230, 44, 42);
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.skill-list {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    background: rgb(230, 44, 42);
+    color: white;
+    padding: 10px 10px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remove-skill {
+    cursor: pointer;
+    font-size: 14px;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: rgb(230, 44, 42);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.registration-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: border 0.2s ease-in-out;
+}
+
+/* Change border color when hovering */
+.registration-form select:hover {
+    /* background-color: rgb(58, 59, 59); */
+    border: 1px solid rgb(230, 44, 42);
+}
+
+/* Also change border when focused (clicked) */
+.registration-form select:focus {
+    border: 1px solid rgb(230, 44, 42);
+    outline: none;
+}

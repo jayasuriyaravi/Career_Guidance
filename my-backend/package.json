@@ -1,0 +1,22 @@
+{
+  "name": "my-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server12.js",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.21.1",
+    "nodeman": "^1.1.2",
+    "openai": "^4.72.0",
+    "react-router-dom": "^6.28.0"
+  },
+  "scripts": {
+    "start": "node server12.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

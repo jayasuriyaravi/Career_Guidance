@@ -1,0 +1,40 @@
+# 📌 Ignore environment files (Sensitive API keys, database credentials)
+my-backend/.env
+frontend/.env
+
+# 📌 Ignore Node.js dependencies (If using Node.js)
+node_modules/
+
+# 📌 Ignore build files (If using React, Angular, or Vue)
+frontend/build/
+frontend/dist/
+
+# 📌 Ignore logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 📌 Ignore IDE/editor config files (VS Code, JetBrains, Sublime, etc.)
+.vscode/
+.idea/
+*.sublime-workspace
+
+# 📌 Ignore system files
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# 📌 Ignore Python Virtual Environment (If using Python)
+venv/
+__pycache__/
+
+# 📌 Ignore compiled files
+*.class
+*.o
+*.so
+*.exe
+
+# 📌 Ignore package-lock and yarn.lock (optional)
+package-lock.json
+yarn.lock
