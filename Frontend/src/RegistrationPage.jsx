@@ -80,22 +80,31 @@ function RegistrationPage() {
         setLoading(true);
 
         // Simple validation
-        if (!formData.name || !formData.age) {
-            setError("Name and age are required fields.");
+        if (!formData.name || !formData.age || !formData.goals) {
+            setError("Name, age, and career goal are required fields.");
             setLoading(false);
             return;
         }
 
         try {
-            await axios.post("http://localhost:5000/api/register", formData);
-            navigate("/questions");
+            const response = await axios.post("http://localhost:5000/api/register", formData);
+            console.log("API Response:", response.data);  // 🔹 Debugging Line
+
+            if (response.data.userId) {
+                localStorage.setItem("userId", response.data.userId);
+                localStorage.setItem("goal", formData.goals);
+                navigate("/questions", { state: { userId: response.data.userId } });
+            } else {
+                setError("Failed to register. Please try again.");
+            }
         } catch (err) {
-            console.error("Error during registration:", err);
+            console.error("Error during registration:", err.response?.data || err.message);
             setError("Failed to register. Please try again.");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="registration-container">

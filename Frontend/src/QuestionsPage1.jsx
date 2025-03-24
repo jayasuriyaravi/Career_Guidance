@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaArrowLeft, FaArrowRight, FaClipboardList } from "react-icons/fa";
 import "./QuestionsPage1.css";
 
 function QuestionsPage() {
+    const location = useLocation();
+
+    // Retrieve userId and goal from state or localStorage
+    const userId = location.state?.userId || localStorage.getItem("userId");
+    const goal = location.state?.goal || localStorage.getItem("goal");
+
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -48,7 +56,7 @@ function QuestionsPage() {
         }));
     };
 
-    const handleAnswerSelection = (selectedOptionLabel) => {
+    const handleAnswerSelection = async (selectedOptionLabel) => {
         const currentQuestion = questions[currentQuestionIndex];
         const isCorrect = selectedOptionLabel === currentQuestion.correctAnswer;
 
@@ -67,6 +75,7 @@ function QuestionsPage() {
         }
     };
 
+
     const handleNext = () => {
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
@@ -79,9 +88,35 @@ function QuestionsPage() {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (!userId) {
+            alert("Error: User ID is missing. Please re-register.");
+            return;
+        }
+        
         setShowScore(true);
+
+        const formattedResponses = Object.keys(selectedAnswers).map(index => ({
+            question: questions[index].question, // Fix: Get the actual question
+            options: questions[index].options,  // Fix: Get options
+            correctAnswer: questions[index].correctAnswer,
+            userSelectedAnswer: selectedAnswers[index].selected,
+            isCorrect: selectedAnswers[index].isCorrect,
+            explanation: questions[index].explanation // Fix: Get explanation
+        }));
+
+        try {
+            await axios.post("http://localhost:5000/api/store-response", {
+                userId,
+                goal,
+                responses: formattedResponses,
+                totalScore: score
+            });
+        } catch (error) {
+            console.error("Error storing responses:", error);
+        }
     };
+
 
     if (loading) {
         return (
