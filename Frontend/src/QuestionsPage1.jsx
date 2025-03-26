@@ -1,5 +1,7 @@
-import { useEffect, useState,navigate } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 import axios from "axios";
 import { FaCheckCircle, FaTimesCircle, FaArrowLeft, FaArrowRight, FaClipboardList } from "react-icons/fa";
@@ -7,6 +9,7 @@ import "./QuestionsPage1.css";
 
 function QuestionsPage() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     // Retrieve userId and goal from state or localStorage
     const userId = location.state?.userId || localStorage.getItem("userId");
