@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,navigate } from "react";
 import { useLocation } from "react-router-dom";
 
 import axios from "axios";
@@ -160,8 +160,11 @@ function QuestionsPage() {
                         </p>
                     </div>
 
-                    <button className="btn-restart" onClick={() => window.location.reload()}>
-                        Try Again
+                    <button
+                        className="btn-continue"
+                        onClick={() => navigate("/skill-gap", { state: { userId, goal } })}
+                    >
+                        Continue to Skill Gap Analysis
                     </button>
                 </div>
             ) : (

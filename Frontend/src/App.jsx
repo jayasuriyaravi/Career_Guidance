@@ -22,6 +22,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RegistrationPage from "./RegistrationPage";
 import QuestionsPage1 from "./QuestionsPage1";
+import SkillGapPage from "./SkillGapPage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           element={<RegistrationPage />}
         />
         <Route path="/questions" element={<QuestionsPage1 />} />
+        <Route path="/skill-gap" element={<SkillGapPage />} />
       </Routes>
     </Router>
   );
