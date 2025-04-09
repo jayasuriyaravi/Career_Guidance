@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaLightbulb, FaCheckCircle, FaTimesCircle, FaArrowLeft } from "react-icons/fa";
+import { FaLightbulb, FaCheckCircle, FaTimesCircle, FaArrowRight } from "react-icons/fa";
 import "./SkillGapPage.css";
 
 // ✅ Custom Typing Effect (Stops After Full Sentence)
@@ -24,6 +24,7 @@ const TypingEffect = ({ text, speed = 50 }) => {
 
 function SkillGapPage() {
     const location = useLocation();
+    const navigate = useNavigate();
     const userId = location.state?.userId || localStorage.getItem("userId");
 
     const [analysis, setAnalysis] = useState(null);
@@ -99,9 +100,9 @@ function SkillGapPage() {
                 </div>
             )}
 
-            {/* 🔹 Back to Dashboard Button */}
-            <button className="btn-back" onClick={() => window.location.href = "/"}>
-                <FaArrowLeft /> Back to Dashboard
+            {/* 🔹 Generate Roadmap Button */}
+            <button className="btn-roadmap" onClick={() => navigate("/roadmap", { state: { userId } })}>
+                🚀 Generate Roadmap
             </button>
         </div>
     );

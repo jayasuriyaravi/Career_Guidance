@@ -19,10 +19,14 @@ router.get("/api/learning-path/:userId", async (req, res) => {
             return res.status(404).json({ message: "User not found." });
         }
 
+        // 🔹 Ensure user goals exist
+        const userGoals = user?.goals || "Not specified";
+        console.log(`✅ userGoal is................ ${userGoals}`);
+
         // 🔹 Check if learning path exists in DB
         let existingPath = await LearningPath.findOne({ userId });
         if (existingPath) {
-            console.log(`✅ Returning stored Learning Path for User ${userId}. Beginner topics: ${existingPath.beginner.length}, Intermediate: ${existingPath.intermediate.length}, Advanced: ${existingPath.advanced.length}`);
+            console.log(`✅ Returning stored Learning Path for User ${userId}.`);
             return res.status(200).json(existingPath);
         }
 
@@ -38,37 +42,36 @@ router.get("/api/learning-path/:userId", async (req, res) => {
 
         // 🔹 Request AI-generated Learning Path
         const prompt = `
-You are an **AI-powered career roadmap generator**. Your job is to create a **fully structured and step-by-step learning plan** based on the user's career goal and skill gap analysis.
+You are an **AI-powered career roadmap generator**. Your job is to create a **fully structured, in-depth learning roadmap** with **detailed hands-on projects, frameworks, real-world applications, interview questions, documentation, and recommended books**.
 
-### **User's Goal:** ${user.goals}
+## **📌 User Information**
+- **User's Goal:** ${userGoals}  
+- **Weak Skills:** ${JSON.stringify(skillGap.weakSkills.length > 0 ? skillGap.weakSkills : "None")}  
+- **Missing Skills:** ${JSON.stringify(skillGap.missingSkills.length > 0 ? skillGap.missingSkills : "None")}  
+- **Industry Skills Required:** ${JSON.stringify(skillGap.industrySkills.length > 0 ? skillGap.industrySkills : "None")}  
 
-### **User's Weak Skills:** ${JSON.stringify(skillGap.weakSkills.length > 0 ? skillGap.weakSkills : "None")}
-### **User's Missing Skills:** ${JSON.stringify(skillGap.missingSkills.length > 0 ? skillGap.missingSkills : "None")}
-### **Industry Skills:** ${JSON.stringify(skillGap.industrySkills.length > 0 ? skillGap.industrySkills : "None")}
+## **📜 Instructions for Learning Path**
+1️⃣ **Break down the roadmap into:**
+   - **Beginner Level**
+   - **Intermediate Level**
+   - **Advanced Level**
 
-If weak/missing skills are **empty**, generate a **complete roadmap from scratch** covering all necessary topics.  
+2️⃣ **For each level, return a structured roadmap including:**
+   - ✅ **List of key concepts** (Full breakdown, no summaries)  
+   - ✅ **All fundamental & advanced topics** (DO NOT SKIP any topics)  
+   - ✅ **Subtopics under each topic** (DO NOT SKIP any subtopics)  
+   - ✅ **Hands-on projects** (At least 2 per subtopic)  
+   - ✅ **Frameworks, tools & libraries**  
+   - ✅ **Step-by-step learning sequence**  
+   - ✅ **Multiple courses & tutorials (Udemy, Coursera, freeCodeCamp, etc.)**  
+   - ✅ **Top YouTube channels in English, Hindi, Tamil (At least 5 per language)**  
+   - ✅ **Official documentation links**  
+   - ✅ **Books for deep understanding**  
+   - ✅ **Real-world projects for industry application**  
+   - ✅ **Key interview questions for skill assessment**  
 
-### **Instructions:**
-1️⃣ **Break the roadmap into three levels:** **Beginner → Intermediate → Advanced**  
-2️⃣ **For each level, generate a structured learning plan:**
-   - **Skills required for this level**
-   - **Topics to master within each skill**
-   - **Subtopics under each topic**
-   - **Hands-on projects for every subtopic**
-   - **Frameworks, libraries & tools to use**
-   - **Technologies relevant to the skill**
-   - **Courses & learning resources**
-   - **Step-by-step learning sequence** (What to learn first, second, third…)
-   - **Top YouTube channels** for this skill in **English, Hindi, and Tamil**.
-
-3️⃣ **Personalization Rules:**
-- If a skill is in **Missing Skills**, **prioritize it early in the roadmap**.
-- If a skill is in **Weak Skills**, **provide reinforcement exercises & hands-on practice**.
-- If a skill is in **Industry Skills** but missing, **ensure it is covered in detail**.
-
----
-
-### **Output Format (JSON Structure)**:
+## **📂 JSON Output Format**
+\`\`\`json
 {
   "beginner": [
     {
@@ -79,24 +82,51 @@ If weak/missing skills are **empty**, generate a **complete roadmap from scratch
           "subtopics": [
             {
               "name": "HTML Elements & Structure",
-              "hands_on": "Build a simple webpage using HTML tags"
-            },
-            {
-              "name": "CSS Styling & Flexbox",
-              "hands_on": "Style the webpage using CSS & Flexbox"
+              "hands_on": [
+                {
+                  "name": "Build a simple webpage",
+                  "description": "Use basic HTML tags and semantic elements to create a homepage."
+                },
+                {
+                  "name": "CSS Styling & Flexbox",
+                  "description": "Style the webpage using Flexbox layout."
+                }
+              ]
             }
           ]
         }
       ],
       "frameworks": ["React.js"],
-      "libraries": ["Bootstrap", "Tailwind CSS"],
       "technologies": ["Web APIs"],
-      "courses": ["Udemy: Web Development Bootcamp"],
-      "learning_sequence": ["Learn HTML first", "Then move to CSS", "After that, JavaScript"],
+      "tools": ["Git", "Chrome DevTools"],
+      "courses": [
+        "Udemy: The Complete Web Developer Bootcamp",
+        "freeCodeCamp: Responsive Web Design"
+      ],
+      "documentation": [
+        "https://developer.mozilla.org/en-US/docs/Web/HTML",
+        "https://developer.mozilla.org/en-US/docs/Web/CSS"
+      ],
+      "books": [
+        "HTML & CSS: Design and Build Websites by Jon Duckett"
+      ],
+      "real_world_projects": [
+        "Build a Portfolio Website",
+        "Develop a Blog Website"
+      ],
+      "interview_prep": [
+        "What is the difference between block and inline elements?",
+        "How does CSS specificity work?"
+      ],
+      "learning_sequence": [
+        "Learn HTML first",
+        "Then move to CSS",
+        "After that, JavaScript"
+      ],
       "youtube_channels": {
-        "english": ["Traversy Media", "The Net Ninja", "Academind"],
-        "hindi": ["CodeWithHarry", "Geeky Shows", "Great Learning"],
-        "tamil": ["Tamil Tech", "5 Minutes Engineering", "Kaniyam Academy"]
+        "english": ["Traversy Media", "The Net Ninja", "Academind", "Programming with Mosh", "freeCodeCamp"],
+        "hindi": ["CodeWithHarry", "Geeky Shows", "Great Learning", "Apna College", "Thapa Technical"],
+        "tamil": ["Tamil Tech", "Codebinx", "Kaniyam Academy", "Programming in Tamil", "5 Minutes Engineering"]
       }
     }
   ],
@@ -104,7 +134,7 @@ If weak/missing skills are **empty**, generate a **complete roadmap from scratch
   "advanced": [...]
 }
 \`\`\`
-Ensure JSON is **correctly formatted** and **not empty**.
+Ensure JSON is **fully detailed** with no missing concepts.  
 `;
 
         const response = await axios.post(
@@ -116,7 +146,7 @@ Ensure JSON is **correctly formatted** and **not empty**.
                     { role: "user", content: prompt }
                 ],
                 temperature: 0.7,
-                max_tokens: 6000
+                max_tokens: 8000
             },
             {
                 headers: {
@@ -146,7 +176,8 @@ Ensure JSON is **correctly formatted** and **not empty**.
             console.error("❌ AI-generated learning path is empty! Check AI response.");
             throw new Error("AI returned an empty learning path.");
         }
-        // 🔹 Save learning path to DB (Storing beginner, intermediate, and advanced separately)
+
+        // 🔹 Save learning path to DB
         const newLearningPath = new LearningPath({
             userId,
             beginner: learningPath.beginner || [],

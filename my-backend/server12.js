@@ -244,7 +244,7 @@ Return **ONLY a valid JSON array** of MCQs without extra text, Markdown formatti
 
 
 
-// Health check endpoint
+// Health check endpoint    
 app.get('/api/health', (req, res) => {
     try {
         res.status(200).json({ status: 'API is healthy and running.' });
